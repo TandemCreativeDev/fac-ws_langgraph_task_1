@@ -72,6 +72,10 @@ task = "Write a function that checks if a string is a palindrome"
 initial_state = {"input": task}
 final_state = graph.invoke(initial_state)
 
+print("======================================")
 print("Initial Code:\n", final_state["code"])
+print("======================================")
 print("\nReview Feedback:\n", final_state["review"])
+print("======================================")
 print("\nRefactored Code:\n", final_state["refactored_code"])
+print("======================================")
