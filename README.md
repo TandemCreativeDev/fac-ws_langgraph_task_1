@@ -1,5 +1,9 @@
 # LangGraph Code Review Workshop
 
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/885d196b-e9b8-47ee-84de-d4533c42f3b7">
+</p>
+
 A hands-on tutorial for building a multi-agent code review system using LangGraph.
 
 ## Workshop Overview
