@@ -59,32 +59,13 @@ Add the required imports to `main.py`:
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langgraph.graph import StateGraph, END, START
-from typing import TypedDict
 ```
 
 **What you should have:** A file with the basic LangGraph and LangChain imports.
 
 ---
 
-### Step 2: Define the Shared State
-
-**Checkpoint: State definition**
-
-Create a TypedDict to define the state that will be shared across all agents:
-
-```python
-class CodeReviewState(TypedDict):
-    input: str
-    code: str
-    review: str
-    refactored_code: str
-```
-
-**What you should have:** A state class that tracks input requirements, generated code, review feedback, and refactored code.
-
----
-
-### Step 3: Setup the LLM
+### Step 2: Setup the LLM
 
 **Checkpoint: LLM configuration**
 
@@ -100,7 +81,7 @@ llm = ChatOpenAI(model="gpt-4", api_key="YOUR API KEY HERE")
 
 ---
 
-### Step 4: Create Agent Prompts
+### Step 3: Create Agent Prompts
 
 **Checkpoint: Prompt templates**
 
@@ -127,24 +108,24 @@ refactorer_prompt = ChatPromptTemplate.from_messages([
 
 ---
 
-### Step 5: Implement Agent Functions
+### Step 4: Implement Agent Functions
 
 **Checkpoint: Agent implementations**
 
 Create the three agent functions:
 
 ```python
-def coder_agent(state: CodeReviewState) -> CodeReviewState:
+def coder_agent(state):
     response = llm.invoke(coder_prompt.format_messages(input=state["input"]))
     state["code"] = response.content
     return state
 
-def reviewer_agent(state: CodeReviewState) -> CodeReviewState:
+def reviewer_agent(state):
     response = llm.invoke(reviewer_prompt.format_messages(code=state["code"]))
     state["review"] = response.content
     return state
 
-def refactorer_agent(state: CodeReviewState) -> CodeReviewState:
+def refactorer_agent(state):
     response = llm.invoke(refactorer_prompt.format_messages(
         code=state["code"], review=state["review"]))
     state["refactored_code"] = response.content
@@ -155,14 +136,14 @@ def refactorer_agent(state: CodeReviewState) -> CodeReviewState:
 
 ---
 
-### Step 6: Build the Graph
+### Step 5: Build the Graph
 
 **Checkpoint: Graph construction**
 
 Create the LangGraph workflow:
 
 ```python
-builder = StateGraph(CodeReviewState)
+builder = StateGraph(dict)
 builder.add_node("coder", coder_agent)
 builder.add_node("reviewer", reviewer_agent)
 builder.add_node("refactorer", refactorer_agent)
@@ -179,7 +160,7 @@ graph = builder.compile()
 
 ---
 
-### Step 7: Test the System
+### Step 6: Test the System
 
 **Checkpoint: Working application**
 
@@ -233,16 +214,6 @@ python main.py
 ### Issue: Agent functions not working
 
 **Solution:** Verify each agent function returns the updated state
-
-## Workshop Checkpoints Summary
-
-- ✅ **Step 1:** Imports added
-- ✅ **Step 2:** State class defined
-- ✅ **Step 3:** LLM configured
-- ✅ **Step 4:** Prompts created
-- ✅ **Step 5:** Agent functions implemented
-- ✅ **Step 6:** Graph built and compiled
-- ✅ **Step 7:** Application tested
 
 ## Next Steps
 
