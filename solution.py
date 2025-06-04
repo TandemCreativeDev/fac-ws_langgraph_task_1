@@ -1,16 +1,6 @@
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langgraph.graph import StateGraph, END, START
-from typing import TypedDict
-
-# Shared state across the graph
-
-
-class CodeReviewState(TypedDict):
-    input: str
-    code: str
-    review: str
-    refactored_code: str
 
 
 # LLM setup
@@ -33,21 +23,19 @@ refactorer_prompt = ChatPromptTemplate.from_messages([
 ])
 
 # Agent functions
-
-
-def coder_agent(state: CodeReviewState) -> CodeReviewState:
+def coder_agent(state):
     response = llm.invoke(coder_prompt.format_messages(input=state["input"]))
     state["code"] = response.content
     return state
 
 
-def reviewer_agent(state: CodeReviewState) -> CodeReviewState:
+def reviewer_agent(state):
     response = llm.invoke(reviewer_prompt.format_messages(code=state["code"]))
     state["review"] = response.content
     return state
 
 
-def refactorer_agent(state: CodeReviewState) -> CodeReviewState:
+def refactorer_agent(state):
     response = llm.invoke(refactorer_prompt.format_messages(
         code=state["code"], review=state["review"]))
     state["refactored_code"] = response.content
@@ -55,7 +43,7 @@ def refactorer_agent(state: CodeReviewState) -> CodeReviewState:
 
 
 # Build the graph
-builder = StateGraph(CodeReviewState)
+builder = StateGraph(dict)
 builder.add_node("coder", coder_agent)
 builder.add_node("reviewer", reviewer_agent)
 builder.add_node("refactorer", refactorer_agent)
