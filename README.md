@@ -16,7 +16,7 @@ This workshop teaches you to build a LangGraph application that:
 
 ## Prerequisites
 
-- Python 3.8+
+- Python 3.12+
 - OpenAI API key
 - Basic understanding of Python and AI concepts
 
