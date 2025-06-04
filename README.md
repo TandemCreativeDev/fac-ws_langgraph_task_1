@@ -20,7 +20,28 @@ This workshop teaches you to build a LangGraph application that:
 - OpenAI API key
 - Basic understanding of Python and AI concepts
 
-## Installation
+## Environment Manager Installation (Skip this step if you already use Conda or Venv)
+
+**Checkpoint: Install environment manager**
+
+- Mac/Linux:
+  - Install Conda (or can use venv if preferred)
+- Windows:
+  - Skip this step. You can just use global `pip` package manager.
+
+**What you should have**: An environment manager
+
+## Project Setup
+
+- Create a new directory called `langgraph-task-1` with a file called `main.py` inside it
+- Conda users (Mac/Linux), use `conda create -n langgraph-task-1`, then `conda activate langgraph-task-1` inside the directory
+  > - Venv users, setup an environment for this project as you normally would
+
+**What you should have**: An environment to work in
+
+## Package Installation
+
+Inside your project directory, run:
 
 ```bash
 pip install langchain-openai langgraph
